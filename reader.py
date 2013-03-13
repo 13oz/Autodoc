@@ -1,5 +1,6 @@
 import generator
 import os.path
+import sys
 
 TRAILER = """\n\n\nThis documentation file was generated with help of AutoDoc software by Nick Duminsky aka 13oz ,
 if ypu want to send bugreport, tell me, what you want to see in next version, or just give me advice, 
@@ -57,7 +58,7 @@ parse = {'#$': readComment,
        	 'def': readFuncDef,
        	 'import': readImport}
 
-def readFile(srcFile):
+def readFile(srcFile, errFile):
 	result = 'Module '+os.path.basename(srcFile)+'\n\n'
 	try:
 		for line in open(srcFile, "r"):
@@ -66,11 +67,11 @@ def readFile(srcFile):
 				pass
 			else:
 				result += res + '\n'
-	except IOError:
-		print("An error occured while processing "+srcFile, file=sys.stderr)
+	except IOError as err:
+		print("An error occured while processing "+srcFile+ " " +err.errno, file=errFile)
 	finally:
 		result += TRAILER
-		generator.writeToFile((generator.formFileName(srcFile)), result)
+		generator.writeToFile((generator.formFileName(srcFile)), result, errFile)
 	
 def readLine(line):
 	try:
@@ -81,5 +82,3 @@ def readLine(line):
 	#empty string
 	except IndexError:
 		return -1
-
-readFile("G:/Dropbox/Python/Source-struct/strider.py")

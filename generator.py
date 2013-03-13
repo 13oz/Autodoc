@@ -6,14 +6,15 @@ def makeFolder():
 	if not os.path.exists(DIR_NAME):
 		os.mkdir(DIR_NAME)
 
-def writeToFile(filename, text):
+def writeToFile(filename, text, errFile):
 	try:
-		res=open(filename, "w", encoding="utf8")
+		res=open(filename, "w")
 		res.write(text+"\n")
+		res.close
 	except IOError:
-		print("An error occured while processing "+filename, file=sys.stderr)
-	finally:
+		print("An error occured while processing "+filename, file=errFile)
 		res.close()
+		
 
 def formFileName(filename):
 	return (filename[:-3] + ".txt")
