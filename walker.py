@@ -1,15 +1,7 @@
 import os
-import reader
 import sys
 
-#$special comment
-
-#проверка была вынесена в autodoc.py
-"""def isDir(folder):
-	if os.path.isdir(folder):
-		walkThrough(folder)
-	else:
-		print(folder+" is not a folder!")"""
+import reader
 
 def walkThrough(folder, errFile=sys.stdout):
 	for file in os.listdir(folder):
@@ -19,7 +11,7 @@ def walkThrough(folder, errFile=sys.stdout):
 			if checkFile(folder+"/"+file, errFile):
 				reader.readFile(folder+"/"+file, errFile)
 
-def checkFile(filename, errFile):
+def checkFile(filename, errFile=sys.stdout):
 	if filename.endswith(".py"):
 		return True
 	else: 
