@@ -1,6 +1,12 @@
-import generator
 import os.path
 import sys
+
+import generator
+
+parse = {'#$': readComment,
+   	     'class': readClassDef,
+       	 'def': readFuncDef,
+       	 'import': readImport}
 
 TRAILER = """\n\n\nThis documentation file was generated with help of AutoDoc software by Nick Duminsky aka 13oz ,
 if ypu want to send bugreport, tell me, what you want to see in next version, or just give me advice, 
@@ -9,10 +15,11 @@ mailto: duminsky.nick@gmail.com"""
 def addIndent(line):
 	level=0
 	res = ""
-	while level < (repr(line).split()[0].count('\\'))/2:
+	while level < (repr(line).split()[0].count('\\t'))/2:
 		res += '\t'
 		level += 1
 	return res
+
 
 def readClassDef(line):
 	if line.find('(') != -1:
@@ -52,11 +59,6 @@ def readComment(line):
 
 def readImport(line):
 	return addIndent(line) + line.split()[0]
-
-parse = {'#$': readComment,
-   	     'class': readClassDef,
-       	 'def': readFuncDef,
-       	 'import': readImport}
 
 def readFile(srcFile, errFile):
 	result = 'Module '+os.path.basename(srcFile)+'\n\n'
