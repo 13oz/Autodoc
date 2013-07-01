@@ -12,47 +12,34 @@ TRAILER = """\n\n\nThis documentation file was generated with help of AutoDoc so
 if ypu want to send bugreport, tell me, what you want to see in next version, or just give me advice, 
 mailto: duminsky.nick@gmail.com"""
 
+#deprecated
 def addIndent(line):
 	level=0
-	res = ""
 	while level < (repr(line).split()[0].count('\\t'))/2:
-		res += '\t'
 		level += 1
-	return res
+	return "\t"*level
 
+def checkLevel(line):
+	return repr(line).split()[0].count('\\t')
 
 def readClassDef(line):
 	if line.find('(') != -1:
-		return addIndent(line) + "Class {0} extends {1}".format(line.split()[1].split('(')[0], line.split('(')[1].split(')')[0])
+		#(level, classname, parent class name)
+		return checkLevel(line), line.split()[1].split('(')[0], line.split()[1].split(')')[0]
 	else:
-		return addIndent(line) + "Class {0}".format(line.split()[1])
+		#(level, classname)
+		return checkLevel(line), line.split()[1]
 
 def readFuncDef(line):
-	res = ""
-	def takeDefVals(values):
-		for val in values:
-			if val == "self":
-				yield addIndent(line) + "{0}{1} - is a link to self class object\n".format(addIndent(line), val)
-			elif val.find("=") != -1:
-				yield addIndent(line) + "{0}{1} with default value {2}\n".format(addIndent(line),val.split('=')[0],val.split('=')[1])
-			else:
-				yield addIndent(line) + "{0}{1} without defult value\n".format(addIndent(line),val)
-	def takeAnnotation(values):
-		for val in values:
-			if val =="self":
-				yield addIndent(line) + "{0}{1} - is a link to self class object\n".format(addIndent(line), val)
-			else:
-				yield addIndent(line) + "{0}{1} as {2}\n".format(addIndent(line), val.split(':')[0], val.split(':')[1])
-	if line.find("->") != -1:
-		res = addIndent(line) + "Function {0} takes:\n".format(line.split()[1].split('(')[0])
-		for val in takeAnnotation(line.split('(')[1].split(')')[0].split(',')):
-			res += addIndent(line) + val
-		return res
-	else:
-		res = addIndent(line) + "Function {0} takes:\n".format(line.split()[1].split('(')[0])
-		for var in takeDefVals(line.split('(')[1].split(')')[0].split(',')):
-			res += addIndent(line) + var
-		return res
+	def takeName(value):
+		return value.split()[1].split('(')[0]
+	def takeVals(value):
+		return value.split('(')[1].split(')')[0].replace(' ','').split[',']
+	def takeAnnotation(value):
+		return value.split('->')[1].replace(' ','')
+	#(level, 'funcname', ['arg1', 'arg2'], 'return type')
+	return checkLevel(line), takeName(line), takeVals(line), takeAnnotation(line)
+			
 
 def readComment(line):
 	return addIndent(line) + line[len(line.split()[0]):]
