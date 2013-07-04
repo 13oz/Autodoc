@@ -8,17 +8,6 @@ parse = {'#$': readComment,
        	 'def': readFuncDef,
        	 'import': readImport}
 
-TRAILER = """\n\n\nThis documentation file was generated with help of AutoDoc software by Nick Duminsky aka 13oz ,
-if ypu want to send bugreport, tell me, what you want to see in next version, or just give me advice, 
-mailto: duminsky.nick@gmail.com"""
-
-#deprecated
-def addIndent(line):
-	level=0
-	while level < (repr(line).split()[0].count('\\t'))/2:
-		level += 1
-	return "\t"*level
-
 def checkLevel(line):
 	return repr(line).split()[0].count('\\t')
 
@@ -42,32 +31,24 @@ def readFuncDef(line):
 			
 
 def readComment(line):
-	return addIndent(line) + line[len(line.split()[0]):]
+	return checkLevel(line), line[len(line.split()[0]):]
 
 def readImport(line):
-	return addIndent(line) + line.split()[0]
+	return checkLevel(line), line.split()[0]
 
-def readFile(srcFile, errFile):
-	result = 'Module '+os.path.basename(srcFile)+'\n\n'
+def readFile(srcFile, errFile=sys.stdout):
 	try:
 		for line in open(srcFile, "r"):
-			res = readLine(line)
-			if res == -1: 
-				pass
-			else:
-				result += res + '\n'
+			yield readLine(linel)
 	except IOError as err:
 		print("An error occured while processing "+srcFile+ " " +err.errno, file=errFile)
-	finally:
-		result += TRAILER
-		generator.writeToFile((generator.formFileName(srcFile)), result, errFile)
 	
 def readLine(line):
 	try:
 		return parse[line.split()[0]](line)
 	#not a keyword
 	except KeyError:
-		return -1
+		pass
 	#empty string
 	except IndexError:
-		return -1
+		pass
