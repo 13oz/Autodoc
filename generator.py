@@ -1,4 +1,5 @@
 import os
+import sys
 
 import reader
 
@@ -16,10 +17,14 @@ def createName(filename):
 	return (filename[:-3] + ".txt")
 
 def writeToFile(srcfile, errFile=sys.stdout):
+	print(srcfile)
 	try:
-		res=open(createFile(srcfile), "w")
+		res=open(createName(srcfile), "w")
 		for line in reader.readFile(srcfile):
-			
+			print(line)
+			"""for elem in line:
+													res.write(str(elem))
+												res.write("\n")"""
 		res.close
 	except IOError:
 		print("An error occured while processing "+filename, file=errFile)

@@ -14,5 +14,5 @@ args = parser.parse_args()
 if os.path.isfile(args.target):
 	reader.readFile(args.target.replace("\\", "/"), open(args.log, 'w'))
 elif os.path.isdir(args.target):
-	walker.walkThrough(args.target.replace("\\", "/"), open(args.log, 'w'))
+	walker.walkThrough(args.target.replace("\\", "/"))
 else: print(parser.description)
