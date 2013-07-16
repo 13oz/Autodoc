@@ -1,5 +1,6 @@
 import os
 import sys
+import xml.etree.ElementTree as ET
 
 import reader
 
@@ -18,14 +19,16 @@ def createName(filename):
 
 def writeToFile(srcfile, errFile=sys.stdout):
 	print(srcfile)
+	curLevel = 0
 	try:
-		res=open(createName(srcfile), "w")
-		for line in reader.readFile(srcfile):
-			print(line)
-			"""for elem in line:
-													res.write(str(elem))
-												res.write("\n")"""
-		res.close
+		resXML = ET.Element(os.path.basename(srcfile))
+		#res=open(createName(srcfile), "w")
+		for line in open(srcfile, 'r'):
+			if reader.readLine(line)!=None: 
+				if line(1) == curLevel
+		#res.close
 	except IOError:
 		print("An error occured while processing "+filename, file=errFile)
 		res.close()
+
+def addSub(rootElement, subElement):

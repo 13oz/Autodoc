@@ -7,6 +7,7 @@ def checkLevel(line):
 	return repr(line).split()[0].count('\\t')
 
 def readClassDef(line):
+	print(line)
 	if line.find('(') != -1:
 		#(level, classname, parent class name)
 		return checkLevel(line), line.split()[1].split('(')[0], line.split()[1].split(')')[0]
@@ -22,14 +23,22 @@ def readFuncDef(line):
 	def takeAnnotation(value):
 		return value.split('->')[1].replace(' ','')
 	#(level, 'funcname', ['arg1', 'arg2'], 'return type')
-	return checkLevel(line), takeName(line), takeVals(line), takeAnnotation(line)
+	if line.find('->'):
+		return checkLevel(line), takeName(line), takeVals(line), takeAnnotation(line)
+	else:
+		return checkLevel(line), takeName(line), takeVals(line)
 			
 
 def readComment(line):
 	return checkLevel(line), line[len(line.split()[0]):]
 
 def readImport(line):
-	return checkLevel(line), line.split()[0], line.split()[1]
+	return (checkLevel(line), line.split()[0], line.split()[1])
+
+def readReturn(line):
+	return checkLevel(line)
+
+def readCodeBlock(readerFunc, block):
 
 parse = {'#$': readComment,
    	     'class': readClassDef,
@@ -39,7 +48,7 @@ parse = {'#$': readComment,
 def readFile(srcFile, errFile=sys.stdout):
 	try:
 		for line in open(srcFile, "r"):
-			yield readLine(line)
+			readLine(line)
 	except IOError as err:
 		print("An error occured while processing "+srcFile+ " " +str(err.errno), file=errFile)
 	
