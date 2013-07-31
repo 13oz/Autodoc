@@ -13,7 +13,6 @@ parser.add_argument('-l', '--log', help='log file name', default=sys.stdout, req
 args = parser.parse_args()
 
 if os.path.isfile(args.target):
-	
 	reader.readFile(args.target.replace("\\", "/"), args.log)
 elif os.path.isdir(args.target):
 	walker.walkThrough(args.target.replace("\\", "/"))

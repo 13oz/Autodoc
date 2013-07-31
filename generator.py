@@ -17,18 +17,26 @@ def makeFolder():
 def createName(filename):
 	return (filename[:-3] + ".txt")
 
+def getRightElement(element):
+	return list(element[len(list(element))-1])
+
+def findParent(root, srcLine):
+	curElem = root
+	for i in range(srcLine[0]):
+		curElem = getRightElement(curElem)
+	return curElem
+
 def writeToFile(srcfile, errFile=sys.stdout):
 	print(srcfile)
-	curLevel = 0
+	root = ET.Element(os.path.basename(srcfile)) 
 	try:
-		resXML = ET.Element(os.path.basename(srcfile))
-		#res=open(createName(srcfile), "w")
-		for line in open(srcfile, 'r'):
-			if reader.readLine(line)!=None: 
-				if line(1) == curLevel
-		#res.close
+		for line in open(srcfile):
+			resLine = reader.readLine(line)
+			if resLine != None:
+				print(resLine)
+				elem = ET.SubElement(findParent((root), resLine), resLine[1])
+		tree = ET.ElementTree(root)
+		tree.write(srcfile.replace('.py', '.xml'))
 	except IOError:
 		print("An error occured while processing "+filename, file=errFile)
-		res.close()
-
-def addSub(rootElement, subElement):
+		srcfile.close()

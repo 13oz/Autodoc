@@ -38,8 +38,6 @@ def readImport(line):
 def readReturn(line):
 	return checkLevel(line)
 
-def readCodeBlock(readerFunc, block):
-
 parse = {'#$': readComment,
    	     'class': readClassDef,
        	 'def': readFuncDef,
@@ -49,6 +47,7 @@ def readFile(srcFile, errFile=sys.stdout):
 	try:
 		for line in open(srcFile, "r"):
 			readLine(line)
+			print(readLine(line))
 	except IOError as err:
 		print("An error occured while processing "+srcFile+ " " +str(err.errno), file=errFile)
 	
