@@ -9,34 +9,38 @@ def checkLevel(line):
 def readClassDef(line):
 	print(line)
 	if line.find('(') != -1:
-		#(level, classname, parent class name)
-		return checkLevel(line), line.split()[1].split('(')[0], line.split()[1].split(')')[0]
+		return {'type': 'class',
+				'level': checkLevel(line),
+				'classname': line.split()[1].split('(')[0],
+				'parent': line.split()[1].split(')')[0]}
 	else:
-		#(level, classname)
-		return checkLevel(line), line.split()[1]
+		return {'type': 'class',
+				'level': checkLevel(line),
+				'classname': line.split()[1],
+				'parent': 'object'}
 
 def readFuncDef(line):
 	def takeName(value):
 		return value.split()[1].split('(')[0]
 	def takeVals(value):
 		return value.split('(')[1].split(')')[0].replace(' ','').split(',')
+	#todo - change this function - it should read annotation inside takeVals()
 	def takeAnnotation(value):
 		return value.split('->')[1].replace(' ','')
-	#(level, 'funcname', ['arg1', 'arg2'], 'return type')
-	if line.find('->'):
-		return checkLevel(line), takeName(line), takeVals(line), takeAnnotation(line)
-	else:
-		return checkLevel(line), takeName(line), takeVals(line)
-			
+	return {'type': 'function',
+			'level': checkLevel(line),
+			'name': takeName(line),
+			'arguments': takeVals(line)}
 
 def readComment(line):
-	return checkLevel(line), line[len(line.split()[0]):]
+	return {'type': 'comment',
+			'level': checkLevel(line),
+			'text': line[len(line.split()[0]):]}
 
 def readImport(line):
-	return (checkLevel(line), line.split()[0], line.split()[1])
-
-def readReturn(line):
-	return checkLevel(line)
+	return {'type': 'import',
+			'level': checkLevel(line),
+			'module': line.split()[1]}
 
 parse = {'#$': readComment,
    	     'class': readClassDef,
@@ -45,12 +49,12 @@ parse = {'#$': readComment,
 
 def readFile(srcFile, errFile=sys.stdout):
 	try:
-		for line in open(srcFile, "r"):
-			readLine(line)
-			print(readLine(line))
+		with open(srcfile, "r") as curFile:
+			for line in curFile:
+				readLine(line)
 	except IOError as err:
 		print("An error occured while processing "+srcFile+ " " +str(err.errno), file=errFile)
-	
+
 def readLine(line):
 	try:
 		return parse[line.split()[0]](line)
