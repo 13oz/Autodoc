@@ -6,10 +6,6 @@ import reader
 
 DIR_NAME = "autodoc"
 
-TRAILER = """\n\n\nThis documentation file was generated with help of AutoDoc software by Nick Duminsky aka 13oz ,
-if ypu want to send bugreport, tell me, what you want to see in next version, or just give me advice, 
-mailto: duminsky.nick@gmail.com"""
-
 def makeFolder():
 	if not os.path.exists(DIR_NAME):
 		os.mkdir(DIR_NAME)
@@ -48,10 +44,10 @@ def writeToFile(srcfile, errFile=sys.stdout):
 
 def writeElem(root, resLine):
 	def writeClass(root, resLine):
-		return ET.SubElement(root, resLine['classname'], {'parent class': resLine['parent']})
+		return ET.SubElement(root, resLine['type'], {'name': resLine['classname'], 'parent_class': resLine['parent']})
 
 	def writeFunction(root, resLine):
-		return ET.SubElement(root, resLine['name'], {'arguments': resLine['arguments']})
+		return ET.SubElement(root, resLine['type'], {'name': resLine['name'], 'arguments': resLine['arguments']})
 
 	def writeImport(root, resLine):
 		return ET.SubElement(root, resLine['type'], {'module': resLine['module']})

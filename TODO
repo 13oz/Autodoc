@@ -1,0 +1,4 @@
+TODO
+1) избавиться от перекрестного импорта
+generator: посмотреть на writeToFile; 
+walker: проверить walkThrough

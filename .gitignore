@@ -17,6 +17,17 @@ local.properties
 .classpath
 .settings/
 .loadpath
+*.html
+*.png
+*.css
+*.js
+*.bat
+*.tex
+*.sty
+*.xslt
+Doxyfile
+Makefile
+*.xsd
 
 #sublime text project files
 *.sublime-project
