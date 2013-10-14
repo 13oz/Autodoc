@@ -10,10 +10,22 @@ parser = argparse.ArgumentParser(description='foo')
 parser.add_argument('-t', '--target', help='target file or directory', required=False)
 parser.add_argument('-l', '--log', help='log file name', default=sys.stdout, required=False)
 
-args = parser.parse_args()
 
-if os.path.isfile(args.target):
-	reader.readFile(args.target.replace("\\", "/"), args.log)
-elif os.path.isdir(args.target):
-	walker.walkThrough(args.target.replace("\\", "/"))
-else: print(parser.description)
+def main():
+    target_path = parser.parse_args().target
+    log_file = parser.parse_args().log
+
+    #check OS
+    if os.name == 'nt':
+        #this is Windows, so let's have some sex with path...
+        target_path = target_path.replace("\\", "/")
+        log_file = log_file.replace("\\", "/")
+
+    if os.path.isfile(target_path):
+        reader.read_file(target_path, log_file)
+    elif os.path.isdir(target_path):
+        walker.walk_through(target_path)
+    else: print(parser.description)
+
+if __name__ == "__main__":
+    main()
