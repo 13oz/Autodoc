@@ -1,6 +1,6 @@
 import sys
 
-
+#todo here is the problem with nested func
 def check_level(line):
     return repr(line).split()[0].count('\\t')
 
