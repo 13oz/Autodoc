@@ -14,17 +14,15 @@ def make_folder():
 
 
 def create_name(filename):
-    return (filename[:-3] + ".xml")
+    return filename[:-3] + ".xml"
 
 
 def get_right_element(element):
-    print(list(element))
     return list(element)[-1]
 
 
 def find_parent(root, level):
     curelem = root
-    print(level)
     if level == 0:
         return root
     else:
@@ -40,8 +38,7 @@ def write_to_file(srcfile, errfile=sys.stdout):
             for line in openFile:
                 resline = reader.read_line(line)
                 if resline is not None:
-                    #todo check wht do I need this variable?
-                    elem = write_elem(find_parent(root, resline['level']), resline)
+                    write_elem(find_parent(root, resline['level']), resline)
     except IOError:
         print("An error occurred while processing "+srcfile, file=errfile)
         srcfile.close()
