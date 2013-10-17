@@ -1,3 +1,4 @@
+#! /usr/bin/python
 import os
 import sys
 import argparse
@@ -13,16 +14,16 @@ parser.add_argument('-l', '--log', help='log file name', default=sys.stdout, req
 
 def main():
     target_path = parser.parse_args().target
-    log_file = parser.parse_args().log
+    #log_file = parser.parse_args().log
 
     #check OS
     if os.name == 'nt':
         #this is Windows, so let's have some sex with path...
         target_path = target_path.replace("\\", "/")
-        log_file = log_file.replace("\\", "/")
+        #log_file = log_file.replace("\\", "/")
 
     if os.path.isfile(target_path):
-        reader.read_file(target_path, log_file)
+        reader.read_file(target_path)
     elif os.path.isdir(target_path):
         walker.walk_through(target_path)
     else: print(parser.description)
