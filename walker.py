@@ -1,3 +1,4 @@
+__author__ = 'Duminsky Nick'
 import os
 import sys
 

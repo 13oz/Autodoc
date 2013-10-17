@@ -1,3 +1,4 @@
+__author__ = 'Duminsky Nick'
 import sys
 
 #todo here is the problem with nested func

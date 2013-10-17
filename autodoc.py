@@ -1,4 +1,5 @@
 #! /usr/bin/python
+__author__ = 'Duminsky Nick'
 import os
 import sys
 import argparse
@@ -8,8 +9,10 @@ import walker
 
 parser = argparse.ArgumentParser(description='foo')
 
+parser.add_argument('-c', '--config', help='path to config file', required=False)
 parser.add_argument('-t', '--target', help='target file or directory', required=False)
 parser.add_argument('-l', '--log', help='log file name', default=sys.stdout, required=False)
+parser.add_argument('-i', '--intend', help='intend style', default='space', required=False)
 
 
 def main():
